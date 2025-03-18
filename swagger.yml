@@ -366,63 +366,6 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Channel'
-  /channels/{id}:
-    get:
-      tags:
-        - channel
-      summary: Get channel by id
-      operationId: getChannelById
-      parameters:
-        - $ref: '#/components/parameters/id'
-      responses:
-        "200":
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Channel'
-    put:
-      tags:
-        - channel
-      summary: Update channel by id
-      operationId: updateChannelById
-      parameters:
-        - name: channelId
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int64
-          description: ID of the channel to update
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UpsertChannelRequest'
-      responses:
-        "200":
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Channel'
-    delete:
-      tags:
-        - channel
-      summary: Delete channel by id
-      operationId: deleteChannelById
-      parameters:
-        - name: channelId
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int64
-          description: ID of the channel to delete
-      responses:
-        "204":
-          description: successful operation
-
   /bills/download-excel:
     post:
       tags:
