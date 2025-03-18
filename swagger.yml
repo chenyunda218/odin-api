@@ -1,0 +1,1471 @@
+openapi: 3.0.3
+info:
+  title: Odin auth Apis
+  contact:
+    email: dan.chen@boardware.com
+  version: 1.0.1
+# servers:
+#   - url: https://petstore3.swagger.io/api/v3
+tags:
+  - name: account
+  - name: user
+  - name: bill
+  - name: report
+  - name: channel
+  - name: entrances
+  - name: notification
+  - name: tenant
+  - name: project
+  - name: log
+  - name: statistics
+paths:
+  /logs/loki:
+    post:
+      tags:
+        - log
+      summary: Create log
+      description: Create log
+      operationId: createLokiLog
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpsertLokiRequest'
+      
+      responses:
+        "201":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Loki'
+    get:
+      tags:
+        - log
+      summary: Get logs
+      description: Get logs
+      operationId: listLokiLogs
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Loki'
+  /logs/loki/{id}:
+    get:
+      tags:
+        - log
+      summary: Get log by id
+      description: Get log by id
+      operationId: getLokiLogById
+      parameters:
+        - $ref: '#/components/parameters/id'
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Loki'
+    put:
+      tags:
+        - log
+      summary: Update log by id
+      description: Update log by id
+      operationId: updateLokiLogById
+      parameters:
+        - $ref: '#/components/parameters/id'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpsertLokiRequest'
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Loki'
+    delete:
+      tags:
+        - log
+      summary: Delete log by id
+      description: Delete log by id
+      operationId: deleteLokiLogById
+      parameters:
+        - $ref: '#/components/parameters/id'
+      responses:
+        "204":
+          description: successful operation
+  /logs/secrets:
+    get:
+      tags:
+        - log
+      summary: Get logs
+      description: Get logs
+      operationId: listLogs
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LogSecret'
+    post:
+      tags:
+        - log
+      summary: Create log
+      description: Create log
+      operationId: createLogSecret
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+      responses:
+        "201":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LogSecret'
+  /logs/secrets/{id}:
+    put:
+      tags:
+        - log
+      summary: Update log by id
+      description: Update log by id
+      operationId: updateLogSecretById
+      parameters:
+        - $ref: '#/components/parameters/id'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LogSecret'
+    delete:
+      tags:
+        - log
+      summary: Delete log by id
+      description: Delete log by id
+      operationId: deleteLogSecretById
+      parameters:
+        - $ref: '#/components/parameters/id'
+      responses:
+        "204":
+          description: successful operation
+  /accounts:
+    get:
+      tags:
+        - account
+      summary: Get accounts
+      description: Get accounts
+      operationId: listAccounts
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Account'
+    post:
+      tags:
+        - account
+      summary: Create account
+      description: Create account
+      operationId: createAccount
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpsertAccountRequest'
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Account'
+  /accounts/{id}:
+    get:
+      tags:
+        - account
+      summary: Get account by id
+      description: Get account by id
+      operationId: getAccountById
+      parameters:
+        - $ref: '#/components/parameters/id'
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Account'
+    put:
+      tags:
+        - account
+      summary: Update account by id
+      description: Update account by id
+      operationId: updateAccountById
+      parameters:
+        - $ref: '#/components/parameters/id'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpsertAccountRequest'
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Account'
+    delete:
+      tags:
+        - account
+      summary: Delete account by id
+      description: Delete account by id
+      operationId: deleteAccountById
+      parameters:
+        - $ref: '#/components/parameters/id'
+      responses:
+        "204":
+          description: successful operation
+  /accounts/{id}/password:
+    put:
+      tags:
+        - account
+      summary: Update account password
+      description: Update account password
+      operationId: updateAccountPassword
+      parameters:
+        - $ref: '#/components/parameters/id'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                password:
+                  type: string
+      responses:
+        "204":
+          description: successful operation
+  /accounts/sessions:
+    post:
+      tags:
+        - account
+      description: Create login session
+      operationId: createSession
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        "201":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+  /accounts/me:
+    get:
+      tags:
+        - account
+      summary: Get current account
+      description: Get current account
+      operationId: getCurrentAccount
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Account'
+                  - $ref: '#/components/schemas/User'
+  /users/sso/url:
+    get:
+      tags:
+        - user
+      summary: Get SSO URL
+      description: Get SSO URL
+      operationId: getSSOUrl
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  url:
+                    type: string
+                    format: url
+  /channels:
+    post:
+      tags:
+        - channel
+      summary: Create channel
+      operationId: createChannel
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpsertChannelRequest'
+      responses:
+        "201":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Channel'
+    get:
+      tags:
+        - channel
+      summary: Get channels
+      operationId: listChannels
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Channel'
+  /channels/{id}:
+    get:
+      tags:
+        - channel
+      summary: Get channel by id
+      operationId: getChannelById
+      parameters:
+        - $ref: '#/components/parameters/id'
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Channel'
+    put:
+      tags:
+        - channel
+      summary: Update channel by id
+      operationId: updateChannelById
+      parameters:
+        - name: channelId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+          description: ID of the channel to update
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpsertChannelRequest'
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Channel'
+    delete:
+      tags:
+        - channel
+      summary: Delete channel by id
+      operationId: deleteChannelById
+      parameters:
+        - name: channelId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+          description: ID of the channel to delete
+      responses:
+        "204":
+          description: successful operation
+  /bills/statistics:
+    post:
+      tags:
+        - bill
+      summary: Get statistics
+      description: Get statistics
+      operationId: createStatistics
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateBillStatisticsRequest'
+      responses:
+        "200":
+          $ref: '#/components/schemas/Bill'
+
+  /bills/download-excel:
+    post:
+      tags:
+        - bill
+      summary: Download excel
+      description: Download excel
+      operationId: downloadExcel
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateBillStatisticsRequest'
+      responses:
+        "200":
+          description: successful operation
+  /bills/records:
+    post:
+      tags:
+        - bill
+      summary: Create vm event
+      description: Create vm event
+      operationId: createVmEvent
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VmEvent'
+      responses:
+        "204":
+          description: successful operation
+  /bills/vm-prices:
+    post:
+      tags:
+        - bill
+      summary: Create vm prices
+      description: Create vm prices
+      operationId: createVmPrices
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpsertPriceTableRequest'
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VmPriceTable'
+    get:
+      tags:
+        - bill
+      summary: Get vm prices
+      description: Get vm prices
+      operationId: listVmPrices
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/VmPriceTable'
+  /bills/vm-prices/{id}:
+    get:
+      tags:
+        - bill
+      summary: Get vm price by id
+      description: Get vm price by id
+      operationId: getVmPriceById
+      parameters:
+        - $ref: '#/components/parameters/id'
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VmPriceTable'
+    put:
+      tags:
+        - bill
+      summary: Update vm price by id
+      description: Update vm price by id
+      operationId: updateVmPriceById
+      parameters:
+        - $ref: '#/components/parameters/id'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpsertPriceTableRequest'
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VmPriceTable'
+    delete:
+      tags:
+        - bill
+      summary: Delete vm price by id
+      description: Delete vm price by id
+      operationId: deleteVmPriceById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: ID of the vm price to delete
+      responses:
+        "204":
+          description: successful operation
+  /bills/h3c-records:
+    post:
+      tags:
+        - bill
+      summary: Create h3c event
+      description: Create h3c event
+      operationId: createH3cEvent
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateH3cRecordsRequest'
+      responses:
+        "204":
+          description: successful operation
+  /tenants:
+    post:
+      tags:
+        - tenant
+      summary: Create tenant
+      description: Create tenant
+      operationId: createTenant
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpsertTenantRequest'
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tenant'
+    get:
+      tags:
+        - tenant
+      summary: Get tenants
+      description: Get tenants
+      operationId: listTenants
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Tenant'
+  /tenants/{tenantId}:
+    get:
+      tags:
+        - tenant
+      summary: Get tenant by id
+      description: Get tenant by id
+      operationId: getTenantById
+      parameters:
+        - $ref: '#/components/parameters/tenantId'
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tenant'
+    put:
+      tags:
+        - tenant
+      summary: Update tenant by id
+      description: Update tenant by id
+      operationId: updateTenantById
+      parameters:
+        - $ref: '#/components/parameters/tenantId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpsertTenantRequest'
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tenant'
+    delete:
+      tags:
+        - tenant
+      summary: Delete tenant by id
+      description: Delete tenant by id
+      operationId: deleteTenantById
+      parameters:
+        - $ref: '#/components/parameters/tenantId'
+      responses:
+        "204":
+          description: successful operation
+  /contracts:
+    get:
+      tags:
+        - tenant
+      summary: Get contracts
+      description: Get contracts
+      operationId: listContracts
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Contract'
+    post:
+      tags:
+        - tenant
+      summary: Create contract
+      description: Create contract
+      operationId: createContract
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Contract'
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contract'
+  /contracts/{id}:
+    get:
+      tags:
+        - tenant
+      summary: Get contract by id
+      description: Get contract by id
+      operationId: getContractById
+      parameters:
+        - $ref: '#/components/parameters/id'
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contract'
+    put:
+      tags:
+        - tenant
+      summary: Update contract by id
+      description: Update contract by id
+      operationId: updateContractById
+      parameters:
+        - $ref: '#/components/parameters/id'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Contract'
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contract'
+    delete:
+      tags:
+        - tenant
+      summary: Delete contract by id
+      description: Delete contract by id
+      operationId: deleteContractById
+      parameters:
+        - $ref: '#/components/parameters/id'
+      responses:
+        "204":
+          description: successful operation
+  /projects:
+    post:
+      tags:
+        - project
+      summary: Create project
+      description: Create project
+      operationId: createProject
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Project'
+      responses:
+        "201":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+    get:
+      tags:
+        - project
+      summary: Get projects
+      description: Get projects
+      operationId: listProjects
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Project'
+  /projects/{id}:
+    get:
+      tags:
+        - project
+      summary: Get project by id
+      description: Get project by id
+      operationId: getProjectById
+      parameters:
+        - $ref: '#/components/parameters/id'
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+    put:
+      tags:
+        - project
+      summary: Update project by id
+      description: Update project by id
+      operationId: updateProjectById
+      parameters:
+        - $ref: '#/components/parameters/id'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Project'
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+    delete:
+      tags:
+        - project
+      summary: Delete project by id
+      description: Delete project by id
+      operationId: deleteProjectById
+      parameters:
+        - $ref: '#/components/parameters/id'
+      responses:
+        "204":
+          description: successful operation
+  /reports:
+    post:
+      tags:
+        - report
+      summary: Create report
+      description: Create report
+      operationId: createReport
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+                type:
+                  type: string
+                  enum:
+                    - vm
+                    - alert
+                filter:
+                  type: object
+                  properties:
+                    key:
+                      type: string
+                    value:
+                      type: string
+      responses:
+        "200":
+          description: successful operation
+  /statistics/device/availability:
+    get:
+      tags:
+        - statistics
+      summary: Get device availability
+      description: Get device availability
+      operationId: getDeviceAvailability
+      parameters:
+        - $ref: '#/components/parameters/projectId'
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeviceAvailability'
+  /statistics/device:
+    get:
+      tags:
+        - statistics
+      summary: Get device statistics
+      description: Get device statistics
+      operationId: getDeviceStatistics
+      parameters:
+        - $ref: '#/components/parameters/projectId'
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeviceInfoList'
+  /statistics/inventories:
+    get:
+      tags:
+        - statistics
+      summary: Get inventory statistics
+      description: Get inventory statistics
+      operationId: getInventoryStatistics
+      parameters:
+        - $ref: '#/components/parameters/projectId'
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InventoryItemList'
+  /statistics/alarms:
+    get:
+      tags:
+        - statistics
+      operationId: getProjectAlarms
+      parameters:
+        - $ref: '#/components/parameters/projectId'
+      responses:
+        "200":
+          description: successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlarmInfoList'
+  /statistics/alarms/trends:
+    get:
+      tags:
+        - statistics
+      operationId: getProjectAlarmTrands
+      parameters:
+        - $ref: '#/components/parameters/projectId'
+      responses:
+        "200":
+          description: successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlarmsTrends'
+  /statistics/billing:
+    get:
+      tags:
+        - statistics
+      operationId: getBillingStatistics
+      parameters:
+        - $ref: '#/components/parameters/projectId'
+      responses:
+        "200":
+          description: successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Bills'
+components:
+  schemas:
+    ErrorMessage:
+      type: object
+      properties:
+        message:
+          type: string
+        code:
+          type: integer
+    DeviceCosts:
+      type: object
+      properties:
+        name:
+          type: string
+        costs:
+          type: number
+          format: double
+    Bills:
+      type: object
+      properties:
+        topFiveDevices:
+          type: array
+          items:
+            $ref: '#/components/schemas/DeviceCosts'
+        trend:
+          type: array
+          items:
+            type: number
+            format: double
+    AlarmsTrends:
+      type: object
+      properties:
+        sla1:
+          type: integer
+          format: int64
+        sla2:
+          type: integer
+          format: int64
+        sla3:
+          type: integer
+          format: int64
+        sla4:
+          type: integer
+          format: int64
+        trend:
+          type: array
+          items:
+            type: integer
+            format: int64
+    AlarmInfo:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        sla:
+          type: string
+        triggerTime:
+          type: string
+    AlarmInfoList:
+      type: array
+      items:
+        $ref: '#/components/schemas/AlarmInfo'
+    InventoryItem:
+      type: object
+      properties:
+        name:
+          type: string
+        value:
+          type: integer
+    InventoryItemList:
+      type: array
+      items:
+        $ref: '#/components/schemas/InventoryItem'
+    DeviceInfoList:
+      type: array
+      items:
+        $ref: '#/components/schemas/DeviceInfo'
+    DeviceInfo:
+      type: object
+      properties:
+        id:
+          type: string
+        deviceName:
+          type: string
+        deviceType:
+          type: string
+        status:
+          type: integer
+          format: int64
+        location:
+          type: integer
+          format: int64
+        brand:
+          type: string
+        projectName:
+          type: string
+        totalDownTime:
+          type: integer
+          format: int64
+    DeviceAvailability:
+      type: object
+      properties:
+        up:
+          type: integer
+          format: int64
+        down:
+          type: integer
+          format: int64
+        availability:
+          type: number
+        totalDownTime:
+          type: integer
+          format: int64
+    UpsertLokiRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+    Loki:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        tenantId:
+          type: string
+        endpoint:
+          type: string
+          format: url
+    LogSecret:
+      type: object
+      properties:
+        title:
+          type: string
+        tenantId:
+          type: string
+        secret:
+          type: string
+        id:
+          type: string
+    UpsertAccountRequest:
+      type: object
+      properties:
+        tenantId:
+          type: string
+        email:
+          type: string
+        role:
+          type: string
+    Account:
+      type: object
+      properties:
+        id:
+          type: string
+        tenantId:
+          type: string
+        email:
+          type: string
+        role:
+          type: string
+        accountType:
+          type: string
+    Project:
+      type: object
+      properties:
+        id:
+          type: string
+        tenantId:
+          type: string
+        name:
+          type: string
+        code:
+          type: string
+    Contract:
+      type: object
+      properties:
+        id:
+          type: string
+        tenantId:
+          type: string
+        msid:
+          type: string
+        project:
+          type: string
+        startAt:
+          type: integer
+          format: int64
+        endAt:
+          type: integer
+          format: int64
+    Bill:
+      type: array
+      items:
+        type: object
+        properties:
+          hostname:
+            type: string
+          vCPUs:
+            type: integer
+          memory:
+            type: integer
+          storage:
+            type: integer
+          baseFeePerHour:
+            type: number
+          status:
+            type: string
+          hours:
+            type: integer
+          extraStorage:
+            type: integer
+          extraStoragePrice:
+            type: number
+          extraFee:
+            type: number
+          totalPrice:
+            type: number
+    CreateBillStatisticsRequest:
+      type: object
+      properties:
+        msid:
+          type: string
+        startAt:
+          type: integer
+          format: int64
+        endAt:
+          type: integer
+          format: int64
+        priceTableId:
+          type: string
+    CreateH3cRecordsRequest:
+      type: object
+      properties:
+        tenantId:
+          type: string
+        rawData:
+          type: array
+          items:
+            type: object
+    Tenant:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+    UpsertTenantRequest:
+      type: object
+      properties:
+        name:
+          type: string
+    ChannelType:
+      type: string
+      enum: [slack]
+    Channel:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        channel:
+          $ref: '#/components/schemas/SlackChannel'
+        type:
+          $ref: '#/components/schemas/ChannelType'
+    UpsertChannelRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        type:
+          $ref: '#/components/schemas/ChannelType'
+        slackChannel:
+          $ref: '#/components/schemas/SlackChannel'
+    SlackChannel:
+      type: object
+      properties:
+        token:
+          type: string
+        channel:
+          type: string
+        signSecret:
+          type: string
+    CreateReportRequest:
+      type: object
+      properties:
+        startAt:
+          type: integer
+          format: int64
+          description: timestamp
+        endAt:
+          type: integer
+          format: int64
+          description: timestamp
+        tags:
+          type: array
+          items:
+            type: object
+            properties:
+              key:
+                type: string
+              value:
+                type: string
+    UpsertPriceTableRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        specList:
+          type: array
+          items:
+            $ref: '#/components/schemas/VmPrice'
+    VmEvent:
+      type: object
+      properties:
+        tenantId:
+          type: string
+        recordID:
+          type: string
+        vmid:
+          type: string
+        event:
+          type: string
+        completedAt:
+          type: integer
+          format: int64
+        cpus:
+          type: integer
+        memory:
+          type: integer
+        storage:
+          type: integer
+        rawData:
+          type: object
+    VmPriceTable:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        specList:
+          type: array
+          items:
+            $ref: '#/components/schemas/VmPrice'
+    VmPrice:
+      type: object
+      properties:
+        spec:
+          $ref: '#/components/schemas/VmSpec'
+        name:
+          type: string
+        price:
+          type: number
+        extraStoragePrice:
+          type: number
+    VmSpec:
+      type: object
+      properties:
+        cpu:
+          type: integer
+        memory:
+          type: integer
+        storage:
+          type: integer
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        email:
+          type: string
+          format: email
+          example: dan.chen@boardware.com
+        accountType:
+          type: string
+        createdAt:
+          type: integer
+          format: int64
+    UpsertAlert:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+    TagCondition:
+      type: object
+      properties:
+        key:
+          type: string
+        value:
+          type: string
+    Alert:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        description:
+          type: string
+        createdAt:
+          type: integer
+          format: int64
+        updatedAt:
+          type: integer
+          format: int64
+    NotificationType:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - email
+            - webhook
+    UpserNotification:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        type:
+          $ref: '#/components/schemas/NotificationType'
+        email:
+          $ref: '#/components/schemas/EmailNotification'
+        webhook:
+          $ref: '#/components/schemas/WebhookNotification'
+    Notification:
+      type: object
+      required:
+        - id
+        - name
+        - description
+        - notificationType
+        - notification
+        - createdAt
+        - updatedAt
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        description:
+          type: string
+        notificationType:
+          $ref: '#/components/schemas/NotificationType'
+        notification:
+          oneOf:
+            - $ref: '#/components/schemas/EmailNotification'
+            - $ref: '#/components/schemas/WebhookNotification'
+        createdAt:
+          type: integer
+          format: int64
+        updatedAt:
+          type: integer
+          format: int64
+    EmailNotification:
+      type: object
+      properties:
+        to:
+          type: string
+          format: email
+        subject:
+          type: string
+        body:
+          type: string
+        username:
+          type: string
+          format: email
+          example: "dan.chen@boardware.com"
+        password:
+          type: string
+        host:
+          description: smtp host
+          type: string
+          example: smtp.gmail.com
+        port:
+          description: smtp port
+          type: integer
+          example: 587
+        from:
+          description: from email
+          type: string
+          example: "MS Notification <ms_notification@boardware.com>"
+    WebhookNotification:
+      type: object
+      properties:
+        url:
+          type: string
+        headers:
+          type: array
+          items:
+            $ref: '#/components/schemas/Header'
+        body:
+          type: string
+    Header:
+      type: object
+      properties:
+        key:
+          type: string
+        value:
+          type: string
+  parameters:
+    id:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+    tenantId:
+      name: tenantId
+      in: path
+      required: true
+      schema:
+        type: string
+    projectId:
+      name: projectId
+      in: query
+      required: true
+      schema:
+        type: string
