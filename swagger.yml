@@ -3,7 +3,7 @@ info:
   title: Odin auth Apis
   contact:
     email: dan.chen@boardware.com
-  version: 1.0.4
+  version: 1.0.5
 # servers:
 #   - url: https://petstore3.swagger.io/api/v3
 tags:
@@ -862,20 +862,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Bills'
-  /statistics/hello:
-    get:
-      tags:
-        - statistics
-      operationId: statisticsHello
-      parameters:
-        - $ref: '#/components/parameters/projectId'
-      responses:
-        "200":
-          description: successful
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Bills'
 components:
   schemas:
     ErrorMessage:
@@ -988,9 +974,15 @@ components:
           format: int64
         availability:
           type: number
+          format: double
         totalDownTime:
           type: integer
           format: int64
+      required:
+        - up
+        - down
+        - availability
+        - totalDownTime
     UpsertLokiRequest:
       type: object
       properties:
