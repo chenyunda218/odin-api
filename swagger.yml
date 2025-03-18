@@ -3,7 +3,7 @@ info:
   title: Odin auth Apis
   contact:
     email: dan.chen@boardware.com
-  version: 1.0.1
+  version: 1.0.2
 # servers:
 #   - url: https://petstore3.swagger.io/api/v3
 tags:
