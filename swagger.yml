@@ -998,6 +998,14 @@ components:
         endpoint:
           type: string
           format: url
+    Man:
+      type: object
+      properties:
+        name:
+          type: string
+        age:
+          type: integer
+          format: int64
     LogSecret:
       type: object
       properties:
