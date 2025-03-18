@@ -422,21 +422,6 @@ paths:
       responses:
         "204":
           description: successful operation
-  /bills/statistics:
-    post:
-      tags:
-        - bill
-      summary: Get statistics
-      description: Get statistics
-      operationId: createStatistics
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CreateBillStatisticsRequest'
-      responses:
-        "200":
-          $ref: '#/components/schemas/Bill'
 
   /bills/download-excel:
     post:
