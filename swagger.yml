@@ -75,7 +75,7 @@ paths:
     get:
       tags:
         - statistics
-      operationId: getProjectAlarmTrands
+      operationId: getProjectAlarmTrends
       parameters:
         - $ref: '#/components/parameters/projectId'
       responses:
