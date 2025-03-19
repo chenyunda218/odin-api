@@ -3,14 +3,36 @@ info:
   title: Odin auth Apis
   contact:
     email: dan.chen@boardware.com
-  version: 1.0.12
+  version: 1.0.15
 servers:
+  - url: http://localhost:8080
+    description: 开发环境
   - url: https://103.192.46.20:27002/v2
+    description: UAT
 tags:
   - name: system
   - name: statistics
   - name: tenant
+  - name: project
 paths:
+  /projects:
+    get:
+      tags:
+        - project
+      summary: Get all projects
+      description: Get all projects
+      operationId: listProjects
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Project'
   /tenants:
     get:
       tags:
@@ -56,6 +78,8 @@ paths:
       summary: Get tenant by id
       description: Get tenant by id
       operationId: getTenantById
+      security:
+        - bearerAuth: []
       parameters:
         - $ref: '#/components/parameters/tenantId'
       responses:
@@ -96,6 +120,183 @@ paths:
       responses:
         "204":
           description: successful operation
+
+  /tenants/{tenantId}/accounts:
+    get:
+      tags:
+        - account
+        - tenant
+      summary: Get accounts
+      description: Get accounts
+      operationId: getAccounts
+      parameters:
+        - $ref: '#/components/parameters/tenantId'
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Account'
+
+    post:
+      tags:
+        - account
+        - tenant
+      summary: Create account
+      description: Create account
+      operationId: createAccount
+      parameters:
+        - $ref: '#/components/parameters/tenantId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccountRequest'
+      responses:
+        "201":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Account'
+
+
+  /tenants/account/{accountId}:
+    put:
+      tags:
+        - account
+        - tenant
+      summary: Update account
+      description: Update account
+      operationId: updateAccount
+      parameters:
+        - $ref: '#/components/parameters/accountId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Account'
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Account'
+
+    delete:
+      tags:
+        - account
+        - tenant
+      summary: Delete account
+      description: Delete account
+      operationId: deleteAccount
+      parameters:
+        - $ref: '#/components/parameters/accountId'
+
+      responses:
+        "204":
+          description: successful operation
+
+  /tenants/account/{accountId}/change-password:
+    put:
+      tags:
+        - account
+        - tenant
+      summary: Change password
+      description: Change password
+      operationId: changePassword
+      parameters:
+        - $ref: '#/components/parameters/accountId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChangePasswordReq'
+      responses:
+        "204":
+          description: successful operation
+
+
+  /tenants/{tenantId}/projects:
+    get:
+      tags:
+        - project
+        - tenant
+      summary: Get projects
+      description: Get projects
+      operationId: getProjects
+      parameters:
+        - $ref: '#/components/parameters/tenantId'
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Project'
+    post:
+      tags:
+        - project
+        - tenant
+      summary: Create project
+      description: Create project
+      operationId: createProject
+      parameters:
+        - $ref: '#/components/parameters/tenantId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpsertProjectReq'
+      responses:
+        "201": # created
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+
+  /tenants/projects/{projectId}:
+    put:
+      tags:
+        - project
+        - tenant
+      summary: Update project
+      description: Update project
+      operationId: updateProject
+      parameters:
+        - $ref: '#/components/parameters/projectId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpsertProjectReq'
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+    delete:
+      tags:
+        - project
+        - tenant
+      summary: Delete project
+      description: Delete project
+      operationId: deleteProject
+      parameters:
+        - $ref: '#/components/parameters/projectId'
+      responses:
+        "204": # deleted
+          description: successful operation
+
+
   /system/login:
     post:
       tags:
@@ -311,7 +512,46 @@ paths:
               schema:
                 $ref: '#/components/schemas/Bills'
 components:
+  securitySchemes:
+    # JWT Bearer 认证
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 需通过 /login 接口获取有效Token
   schemas:
+    Project:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        code:
+          type: string
+        tenantId:
+          type: string
+        priceTableId:
+          type: string
+        status:
+          type: integer
+          format: int64
+        msId:
+          type: string
+        contractIds:
+          type: string
+        contractNames:
+          type: array
+          items:
+            type: string
+        contract:
+          type: array
+          items:
+            type: string
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
     Tenant:
       type: object
       properties:
@@ -355,6 +595,141 @@ components:
         - status
         - contact
         - email
+
+    Account:
+      type: object
+      properties:
+        id:
+          type: string
+        tenantId:
+          type: string
+        projectId:
+          type: string
+        email:
+          type: string
+        roleName:
+          type: string
+        roleId:
+          type: string
+        username:
+          type: string
+        password:
+          type: string
+        salt:
+          type: string
+        accountType:
+          type: string
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+        deletedAt:
+          type: string
+
+      required:
+        - id
+        - tenantId
+        - projectId
+        - email
+        - roleName
+        - roleId
+        - username
+        - password
+        - salt
+        - accountType
+        - createdAt
+        - updatedAt
+
+    AccountRequest:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+        email:
+          type: string
+        roleId:
+          type: string
+        projectId:
+          type: string
+      required:
+        - username
+        - password
+        - email
+        - roleId
+        - projectId
+
+    ChangePasswordReq:
+      type: object
+      properties:
+        newPassword:
+          type: string
+      required:
+        - newPassword
+
+    Project:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        code:
+          type: string
+        tenantId:
+          type: string
+        priceTableId:
+          type: string
+        status:
+          type: integer
+        msId:
+          type: string
+        contractIds:
+          type: string
+        contractList:
+          type: array
+          items:
+            type: string
+        contractNames:
+          type: array
+          items:
+            type: string
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+        deletedAt:
+          type: string
+
+      required:
+        - name
+        - code
+        - tenantId
+        - priceTableId
+        - status
+        - msId
+        - contractList
+        - contractNames
+        - createdAt
+        - updatedAt
+
+    UpsertProjectReq:
+      type: object
+      properties:
+        name:
+          type: string
+        code:
+          type: string
+        priceTableId:
+          type: string
+        status:
+          type: integer
+        msId:
+          type: string
+
+
+
     SystemUser:
       type: object
       properties:
@@ -603,7 +978,7 @@ components:
         type: string
     projectId:
       name: projectId
-      in: query
+      in: path
       required: true
       schema:
         type: string
@@ -613,8 +988,45 @@ components:
       required: true
       schema:
         type: string
-  securitySchemes:
-    bearerAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT
+    accountId:
+      name: accountId
+      in: path
+      required: true
+      schema:
+        type: string
+    contractId:
+      name: contractId
+      in: path
+      required: true
+      schema:
+        type: string
+    vmPriceTableId:
+      name: vmPriceTableId
+      in: path
+      required: true
+      schema:
+        type: string
+    whitelistId:
+      name: whitelistId
+      in: path
+      required: true
+      schema:
+        type: string
+    entranceId:
+      name: entranceId
+      in: path
+      required: true
+      schema:
+        type: string
+    channelId:
+      name: channelId
+      in: path
+      required: true
+      schema:
+        type: string
+    notificationId:
+      name: notificationId
+      in: path
+      required: true
+      schema:
+        type: string
