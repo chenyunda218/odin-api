@@ -4,8 +4,8 @@ info:
   contact:
     email: dan.chen@boardware.com
   version: 1.0.10
-# servers:
-#   - url: https://petstore3.swagger.io/api/v3
+servers:
+  - url: https://103.192.46.20:27002/v2
 tags:
   - name: system
   - name: statistics
@@ -109,7 +109,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/LoginRes'
-        "400":
+        "401":
           description: Invalid username/password supplied
           content:
             application/json:
@@ -120,6 +120,8 @@ paths:
       tags:
         - system
       summary: Get user info
+      security:
+        - bearerAuth: []
       description: Get user info
       operationId: getUser
       responses:
@@ -133,6 +135,8 @@ paths:
       tags:
         - system
       summary: Create user
+      security:
+        - bearerAuth: []
       description: Create user
       operationId: createUser
       requestBody:
@@ -152,6 +156,8 @@ paths:
       tags:
         - system
       summary: Get user by id
+      security:
+        - bearerAuth: []
       description: Get user by id
       operationId: getUserById
       parameters:
@@ -167,6 +173,8 @@ paths:
       tags:
         - system
       summary: Update user
+      security:
+        - bearerAuth: []
       description: Update user
       operationId: updateUser
       parameters:
@@ -187,6 +195,8 @@ paths:
       tags:
         - system
       summary: Delete user
+      security:
+        - bearerAuth: []
       description: Delete user
       operationId: deleteUser
       parameters:
@@ -199,6 +209,8 @@ paths:
       tags:
         - system
       summary: Get user info by id
+      security:
+        - bearerAuth: []
       description: Get user info by id
       operationId: getUserInfoById
       parameters:
@@ -214,6 +226,8 @@ paths:
       tags:
         - system
       summary: Update user info
+      security:
+        - bearerAuth: []
       description: Update user info
       operationId: updateUserInfo
       parameters:
@@ -235,6 +249,8 @@ paths:
       tags:
         - statistics
       summary: Get device statistics
+      security:
+        - bearerAuth: []
       description: Get device statistics
       operationId: getDeviceStatistics
       parameters:
@@ -251,6 +267,8 @@ paths:
       tags:
         - statistics
       summary: Get device availability
+      security:
+        - bearerAuth: []
       description: Get device availability
       operationId: getDeviceAvailability
       parameters:
@@ -267,6 +285,8 @@ paths:
       tags:
         - statistics
       summary: Get inventory statistics
+      security:
+        - bearerAuth: []
       description: Get inventory statistics
       operationId: getInventoryStatistics
       parameters:
@@ -283,6 +303,8 @@ paths:
       tags:
         - statistics
       operationId: getProjectAlarms
+      security:
+        - bearerAuth: []
       parameters:
         - $ref: '#/components/parameters/projectId'
       responses:
@@ -297,6 +319,8 @@ paths:
       tags:
         - statistics
       operationId: getProjectAlarmTrends
+      security:
+        - bearerAuth: []
       parameters:
         - $ref: '#/components/parameters/projectId'
       responses:
@@ -311,6 +335,8 @@ paths:
       tags:
         - statistics
       operationId: getBillingStatistics
+      security:
+        - bearerAuth: []
       parameters:
         - $ref: '#/components/parameters/projectId'
       responses:
@@ -621,3 +647,8 @@ components:
       required: true
       schema:
         type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
