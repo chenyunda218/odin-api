@@ -125,7 +125,6 @@ paths:
   /tenants/{tenantId}/accounts:
     get:
       tags:
-        - account
         - tenant
       summary: Get accounts
       description: Get accounts
@@ -141,7 +140,6 @@ paths:
                 $ref: '#/components/schemas/Account'
     post:
       tags:
-        - account
         - tenant
       summary: Create account
       description: Create account
@@ -165,7 +163,6 @@ paths:
   /tenants/account/{accountId}:
     put:
       tags:
-        - account
         - tenant
       summary: Update account
       description: Update account
@@ -188,7 +185,6 @@ paths:
 
     delete:
       tags:
-        - account
         - tenant
       summary: Delete account
       description: Delete account
@@ -203,7 +199,6 @@ paths:
   /tenants/account/{accountId}/change-password:
     put:
       tags:
-        - account
         - tenant
       summary: Change password
       description: Change password
@@ -223,7 +218,6 @@ paths:
   /tenants/{tenantId}/projects:
     get:
       tags:
-        - project
         - tenant
       summary: Get projects
       description: Get projects
@@ -241,7 +235,6 @@ paths:
                   $ref: '#/components/schemas/Project'
     post:
       tags:
-        - project
         - tenant
       summary: Create project
       description: Create project
@@ -264,7 +257,6 @@ paths:
   /tenants/projects/{projectId}:
     put:
       tags:
-        - project
         - tenant
       summary: Update project
       description: Update project
@@ -285,7 +277,6 @@ paths:
                 $ref: '#/components/schemas/Project'
     delete:
       tags:
-        - project
         - tenant
       summary: Delete project
       description: Delete project
