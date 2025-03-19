@@ -3,7 +3,7 @@ info:
   title: Odin auth Apis
   contact:
     email: dan.chen@boardware.com
-  version: 1.0.15
+  version: 1.0.16
 servers:
   - url: http://localhost:8080
     description: 开发环境
@@ -23,7 +23,7 @@ paths:
       description: Get all projects
       operationId: listProjects
       security:
-        - bearerAuth: []
+        - BearerAuth: []
       responses:
         "200":
           description: successful operation
@@ -38,7 +38,7 @@ paths:
       tags:
         - tenant
       security:
-        - bearerAuth: []
+        - BearerAuth: []
       summary: Get all tenants
       description: Get all tenants
       operationId: listTenants
@@ -56,7 +56,7 @@ paths:
         - tenant
       summary: Get all tenants
       security:
-        - bearerAuth: []
+        - BearerAuth: []
       description: Get all tenants
       operationId: createTenant
       requestBody:
@@ -79,7 +79,7 @@ paths:
       description: Get tenant by id
       operationId: getTenantById
       security:
-        - bearerAuth: []
+        - BearerAuth: []
       parameters:
         - $ref: '#/components/parameters/tenantId'
       responses:
@@ -138,7 +138,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Account'
-
     post:
       tags:
         - account
@@ -326,7 +325,7 @@ paths:
         - system
       summary: Get user info
       security:
-        - bearerAuth: []
+        - BearerAuth: []
       description: Get user info
       operationId: getUser
       responses:
@@ -341,7 +340,7 @@ paths:
         - system
       summary: Create user
       security:
-        - bearerAuth: []
+        - BearerAuth: []
       description: Create user
       operationId: createUser
       requestBody:
@@ -362,7 +361,7 @@ paths:
         - system
       summary: Get user by id
       security:
-        - bearerAuth: []
+        - BearerAuth: []
       description: Get user by id
       operationId: getUserById
       parameters:
@@ -379,7 +378,7 @@ paths:
         - system
       summary: Update user
       security:
-        - bearerAuth: []
+        - BearerAuth: []
       description: Update user
       operationId: updateUser
       parameters:
@@ -401,7 +400,7 @@ paths:
         - system
       summary: Delete user
       security:
-        - bearerAuth: []
+        - BearerAuth: []
       description: Delete user
       operationId: deleteUser
       parameters:
@@ -415,7 +414,7 @@ paths:
         - statistics
       summary: Get device statistics
       security:
-        - bearerAuth: []
+        - BearerAuth: []
       description: Get device statistics
       operationId: getDeviceStatistics
       parameters:
@@ -433,7 +432,7 @@ paths:
         - statistics
       summary: Get device availability
       security:
-        - bearerAuth: []
+        - BearerAuth: []
       description: Get device availability
       operationId: getDeviceAvailability
       parameters:
@@ -451,7 +450,7 @@ paths:
         - statistics
       summary: Get inventory statistics
       security:
-        - bearerAuth: []
+        - BearerAuth: []
       description: Get inventory statistics
       operationId: getInventoryStatistics
       parameters:
@@ -469,7 +468,7 @@ paths:
         - statistics
       operationId: getProjectAlarms
       security:
-        - bearerAuth: []
+        - BearerAuth: []
       parameters:
         - $ref: '#/components/parameters/projectId'
       responses:
@@ -485,7 +484,7 @@ paths:
         - statistics
       operationId: getProjectAlarmTrends
       security:
-        - bearerAuth: []
+        - BearerAuth: []
       parameters:
         - $ref: '#/components/parameters/projectId'
       responses:
@@ -501,7 +500,7 @@ paths:
         - statistics
       operationId: getBillingStatistics
       security:
-        - bearerAuth: []
+        - BearerAuth: []
       parameters:
         - $ref: '#/components/parameters/projectId'
       responses:
