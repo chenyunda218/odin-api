@@ -15,6 +15,8 @@ paths:
     get:
       tags:
         - tenant
+      security:
+        - bearerAuth: []
       summary: Get all tenants
       description: Get all tenants
       operationId: listTenants
@@ -31,6 +33,8 @@ paths:
       tags:
         - tenant
       summary: Get all tenants
+      security:
+        - bearerAuth: []
       description: Get all tenants
       operationId: createTenant
       requestBody:
@@ -460,6 +464,8 @@ components:
       properties:
         token:
           type: string
+        user:
+          $ref: '#/components/schemas/SystemUser'
         userInfo:
           $ref: '#/components/schemas/UserInfo'
       required:
