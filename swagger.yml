@@ -3,28 +3,36 @@ info:
   title: Odin auth Apis
   contact:
     email: dan.chen@boardware.com
-  version: 1.0.7
+  version: 1.0.8
 # servers:
 #   - url: https://petstore3.swagger.io/api/v3
 tags:
+  - name: system
   - name: statistics
 paths:
-  /statistics/device/availability:
-    get:
+  /system/login:
+    post:
       tags:
-        - statistics
-      summary: Get device availability
-      description: Get device availability
-      operationId: getDeviceAvailability
-      parameters:
-        - $ref: '#/components/parameters/projectId'
+        - system
+      operationId: login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginReq'
       responses:
         "200":
           description: successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DeviceAvailability'
+                $ref: '#/components/schemas/LoginRes'
+        "400":
+          description: Invalid username/password supplied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
   /statistics/device:
     get:
       tags:
@@ -41,6 +49,22 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/DeviceInfoList'
+  /statistics/device/availability:
+    get:
+      tags:
+        - statistics
+      summary: Get device availability
+      description: Get device availability
+      operationId: getDeviceAvailability
+      parameters:
+        - $ref: '#/components/parameters/projectId'
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeviceAvailability'
   /statistics/device/inventories:
     get:
       tags:
@@ -101,6 +125,45 @@ paths:
                 $ref: '#/components/schemas/Bills'
 components:
   schemas:
+    UserInfo:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        email:
+          type: string
+        userType:
+          type: string
+        tenantId:
+          type: string
+        projectId:
+          type: string
+      required:
+        - id
+        - name
+        - email
+        - userType
+    LoginRes:
+      type: object
+      properties:
+        token:
+          type: string
+        userInfo:
+          $ref: '#/components/schemas/UserInfo'
+      required:
+        - token
+    LoginReq:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+      required:
+        - username
+        - password
     ErrorMessage:
       type: object
       properties:
@@ -108,6 +171,9 @@ components:
           type: string
         code:
           type: integer
+      required:
+        - message
+        - code
     DeviceCosts:
       type: object
       properties:
@@ -116,6 +182,9 @@ components:
         costs:
           type: number
           format: double
+      required:
+        - name
+        - costs
     Bills:
       type: object
       properties:
@@ -148,6 +217,12 @@ components:
           items:
             type: integer
             format: int64
+      required:
+        - sla1
+        - sla2
+        - sla3
+        - sla4
+        - trend
     AlarmInfo:
       type: object
       properties:
@@ -159,6 +234,11 @@ components:
           type: string
         triggerTime:
           type: string
+      required:
+        - id
+        - title
+        - sla
+        - triggerTime
     AlarmInfoList:
       type: array
       items:
@@ -170,6 +250,9 @@ components:
           type: string
         value:
           type: integer
+      required:
+        - name
+        - value
     InventoryItemList:
       type: array
       items:
@@ -200,6 +283,15 @@ components:
         totalDownTime:
           type: integer
           format: int64
+      required:
+        - id
+        - deviceName
+        - deviceType
+        - status
+        - location
+        - brand
+        - projectName
+        - totalDownTime
     DeviceAvailability:
       type: object
       properties:
@@ -220,7 +312,6 @@ components:
         - down
         - availability
         - totalDownTime
-    
   parameters:
     id:
       name: id
