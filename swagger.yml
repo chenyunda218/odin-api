@@ -3,12 +3,12 @@ info:
   title: Odin auth Apis
   contact:
     email: dan.chen@boardware.com
-  version: 1.0.16
+  version: 1.0.17
 servers:
-  - url: http://localhost:8080
-    description: 开发环境
   - url: https://103.192.46.20:27002/v2
     description: UAT
+  - url: http://localhost:8080
+    description: 开发环境
 tags:
   - name: system
   - name: statistics
@@ -26,7 +26,7 @@ paths:
       security:
         - BearerAuth: []
       responses:
-        "200":
+        '200':
           description: successful operation
           content:
             application/json:
@@ -44,7 +44,7 @@ paths:
       description: Get all tenants
       operationId: listTenants
       responses:
-        "200":
+        '200':
           description: successful operation
           content:
             application/json:
@@ -66,7 +66,7 @@ paths:
             schema:
               $ref: '#/components/schemas/UpsertTenantRequest'
       responses:
-        "201":
+        '201':
           description: successful operation
           content:
             application/json:
@@ -84,7 +84,7 @@ paths:
       parameters:
         - $ref: '#/components/parameters/tenantId'
       responses:
-        "200":
+        '200':
           description: successful operation
           content:
             application/json:
@@ -104,7 +104,7 @@ paths:
             schema:
               $ref: '#/components/schemas/UpsertTenantRequest'
       responses:
-        "200":
+        '200':
           description: successful operation
           content:
             application/json:
@@ -119,7 +119,7 @@ paths:
       parameters:
         - $ref: '#/components/parameters/tenantId'
       responses:
-        "204":
+        '204':
           description: successful operation
 
   /tenants/{tenantId}/accounts:
@@ -132,7 +132,7 @@ paths:
       parameters:
         - $ref: '#/components/parameters/tenantId'
       responses:
-        "200":
+        '200':
           description: successful operation
           content:
             application/json:
@@ -152,13 +152,12 @@ paths:
             schema:
               $ref: '#/components/schemas/AccountRequest'
       responses:
-        "201":
+        '201':
           description: successful operation
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Account'
-
 
   /tenants/account/{accountId}:
     put:
@@ -176,7 +175,7 @@ paths:
             schema:
               $ref: '#/components/schemas/Account'
       responses:
-        "200":
+        '200':
           description: successful operation
           content:
             application/json:
@@ -193,7 +192,7 @@ paths:
         - $ref: '#/components/parameters/accountId'
 
       responses:
-        "204":
+        '204':
           description: successful operation
 
   /tenants/account/{accountId}/change-password:
@@ -211,9 +210,8 @@ paths:
             schema:
               $ref: '#/components/schemas/ChangePasswordReq'
       responses:
-        "204":
+        '204':
           description: successful operation
-
 
   /tenants/{tenantId}/projects:
     get:
@@ -225,7 +223,7 @@ paths:
       parameters:
         - $ref: '#/components/parameters/tenantId'
       responses:
-        "200":
+        '200':
           description: successful operation
           content:
             application/json:
@@ -247,7 +245,7 @@ paths:
             schema:
               $ref: '#/components/schemas/UpsertProjectReq'
       responses:
-        "201": # created
+        '201': # created
           description: successful operation
           content:
             application/json:
@@ -269,7 +267,7 @@ paths:
             schema:
               $ref: '#/components/schemas/UpsertProjectReq'
       responses:
-        "200":
+        '200':
           description: successful operation
           content:
             application/json:
@@ -284,9 +282,293 @@ paths:
       parameters:
         - $ref: '#/components/parameters/projectId'
       responses:
-        "204": # deleted
+        '204': # deleted
           description: successful operation
 
+  /tenants/projects/{projectId}/contracts:
+    get:
+      tags:
+        - tenant
+      summary: Get contracts
+      description: Get contracts
+      operationId: getContracts
+      parameters:
+        - $ref: '#/components/parameters/projectId'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Contract'
+    post:
+      tags:
+        - tenant
+      summary: Create contract
+      description: Create contract
+      operationId: createContract
+      parameters:
+        - $ref: '#/components/parameters/projectId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpsertContractReq'
+      responses:
+        '201':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contract'
+
+  /tenants/projects/contracts/{contractId}:
+    put:
+      tags:
+        - tenant
+      summary: Update contract
+      description: Update contract
+      operationId: updateContract
+      parameters:
+        - $ref: '#/components/parameters/contractId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpsertContractReq'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contract'
+
+    delete:
+      tags:
+        - tenant
+      summary: Delete contract
+      description: Delete contract
+      operationId: deleteContract
+      parameters:
+        - $ref: '#/components/parameters/contractId'
+      responses:
+        '204':
+          description: successful operation
+
+  /tenants/projects/{projectId}/vm-prices:
+    get:
+      tags:
+        - tenant
+      summary: Get VM prices
+      description: Get VM prices
+      operationId: getVMPrices
+      parameters:
+        - $ref: '#/components/parameters/projectId'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/VMPrice'
+
+    post:
+      tags:
+        - tenant
+      summary: Create VM price
+      description: Create VM price
+      operationId: createVMPrice
+      parameters:
+        - $ref: '#/components/parameters/projectId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpsertVMPriceReq'
+      responses:
+        '201':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VMPrice'
+
+  /tenants/projects/vm-prices/{vmPriceTableId}:
+    put:
+      tags:
+        - tenant
+      summary: Update VM price
+      description: Update VM price
+      operationId: updateVMPrice
+      parameters:
+        - $ref: '#/components/parameters/vmPriceTableId'
+
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpsertVMPriceReq'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VMPrice'
+    delete:
+      tags:
+        - tenant
+      summary: Delete VM price
+      description: Delete VM price
+      operationId: deleteVMPrice
+      parameters:
+        - $ref: '#/components/parameters/vmPriceTableId'
+
+      responses:
+        '204':
+          description: successful operation
+
+  /tenants/projects/vm-prices/{vmPriceTableId}/record:
+    put:
+      tags:
+        - tenant
+      summary: Update VM price record
+      description: Update VM price record
+      operationId: updateVMPriceRecord
+      parameters:
+        - $ref: '#/components/parameters/vmPriceTableId'
+
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VMPrice'
+      responses:
+        '200':
+          description: successful operation
+
+  /tenants/projects/{projectId}/billing:
+    post:
+      tags:
+        - tenant
+      summary: Create billing
+      description: Create billing
+      operationId: createBilling
+      parameters:
+        - $ref: '#/components/parameters/projectId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BillingReq'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Billing'
+
+  /tenants/projects/{projectId}/billing/download:
+    post:
+      tags:
+        - tenant
+      summary: Download billing
+      description: Download billing
+      operationId: downloadBilling
+      parameters:
+        - $ref: '#/components/parameters/projectId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BillingReq'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+  /tenants/projects/{projectId}/whitelist:
+    get:
+      tags:
+        - tenant
+      summary: Get whitelist
+      description: Get whitelist
+      operationId: getWhitelist
+      parameters:
+        - $ref: '#/components/parameters/projectId'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Whitelist'
+    post:
+      tags:
+        - tenant
+      summary: Add whitelist
+      description: Add whitelist
+      operationId: addWhitelist
+      parameters:
+        - $ref: '#/components/parameters/projectId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpsertWhitelistReq'
+      responses:
+        '201':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Whitelist'
+
+  /tenants/projects/whitelist/{whitelistId}:
+    put:
+      tags:
+        - tenant
+      summary: Update whitelist
+      description: Update whitelist
+      operationId: updateWhitelist
+      parameters:
+        - $ref: '#/components/parameters/whitelistId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpsertWhitelistReq'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Whitelist'
+    delete:
+      tags:
+        - tenant
+      summary: Delete whitelist
+      description: Delete whitelist
+      operationId: deleteWhitelist
+      parameters:
+        - $ref: '#/components/parameters/whitelistId'
+      responses:
+        '204':
+          description: successful operation
 
   /system/login:
     post:
@@ -299,13 +581,13 @@ paths:
             schema:
               $ref: '#/components/schemas/LoginReq'
       responses:
-        "200":
+        '200':
           description: successful operation
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/LoginRes'
-        "401":
+        '401':
           description: Invalid username/password supplied
           content:
             application/json:
@@ -321,7 +603,7 @@ paths:
       description: Get user info
       operationId: getUser
       responses:
-        "200":
+        '200':
           description: successful operation
           content:
             application/json:
@@ -341,7 +623,7 @@ paths:
             schema:
               $ref: '#/components/schemas/SystemUser'
       responses:
-        "201":
+        '201':
           description: successful operation
           content:
             application/json:
@@ -359,7 +641,7 @@ paths:
       parameters:
         - $ref: '#/components/parameters/userId'
       responses:
-        "200":
+        '200':
           description: successful operation
           content:
             application/json:
@@ -381,7 +663,7 @@ paths:
             schema:
               $ref: '#/components/schemas/SystemUser'
       responses:
-        "200":
+        '200':
           description: successful operation
           content:
             application/json:
@@ -398,8 +680,44 @@ paths:
       parameters:
         - $ref: '#/components/parameters/userId'
       responses:
-        "204":
+        '204':
           description: successful operation
+  /system/user/{userId}/info:
+    get:
+      tags:
+        - system
+      summary: Get user info by id
+      description: Get user info by id
+      operationId: getUserInfoById
+      parameters:
+        - $ref: '#/components/parameters/userId'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SystemUserInfo'
+    put:
+      tags:
+        - system
+      summary: Update user info
+      description: Update user info
+      operationId: updateUserInfo
+      parameters:
+        - $ref: '#/components/parameters/userId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SystemUserInfo'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SystemUserInfo'
   /statistics/device:
     get:
       tags:
@@ -412,7 +730,7 @@ paths:
       parameters:
         - $ref: '#/components/parameters/projectId'
       responses:
-        "200":
+        '200':
           description: successful operation
           content:
             application/json:
@@ -430,7 +748,7 @@ paths:
       parameters:
         - $ref: '#/components/parameters/projectId'
       responses:
-        "200":
+        '200':
           description: successful operation
           content:
             application/json:
@@ -448,7 +766,7 @@ paths:
       parameters:
         - $ref: '#/components/parameters/projectId'
       responses:
-        "200":
+        '200':
           description: successful operation
           content:
             application/json:
@@ -464,7 +782,7 @@ paths:
       parameters:
         - $ref: '#/components/parameters/projectId'
       responses:
-        "200":
+        '200':
           description: successful
           content:
             application/json:
@@ -480,7 +798,7 @@ paths:
       parameters:
         - $ref: '#/components/parameters/projectId'
       responses:
-        "200":
+        '200':
           description: successful
           content:
             application/json:
@@ -496,7 +814,7 @@ paths:
       parameters:
         - $ref: '#/components/parameters/projectId'
       responses:
-        "200":
+        '200':
           description: successful
           content:
             application/json:
@@ -684,8 +1002,206 @@ components:
           type: integer
         msId:
           type: string
+    Contract:
+      type: object
+      properties:
+        id:
+          type: string
+        tenantId:
+          type: string
+        msId:
+          type: string
+        PoOrSoList:
+          type: array
+          items:
+            type: string
+        projectId:
+          type: string
+        ProjectName:
+          type: string
+        status:
+          type: integer
+        startAt:
+          type: string
+          format: date-time
+        endAt:
+          type: string
+          format: date-time
 
+    UpsertContractReq:
+      type: object
+      properties:
+        msId:
+          type: string
+        PoOrSoList:
+          type: array
+          items:
+            type: string
 
+        status:
+          type: integer
+        startAt:
+          type: string
+          format: date-time
+        endAt:
+          type: string
+          format: date-time
+
+    VMPrice:
+      type: object
+      properties:
+        id:
+          type: string
+        tenantId:
+          type: string
+        projectId:
+          type: string
+        specList:
+          type: array
+          items:
+            $ref: '#/components/schemas/VmSpecPrice'
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    VmSpecPrice:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        spec:
+          type: array
+          items:
+            $ref: '#/components/schemas/VmSpec'
+        price:
+          type: number
+        extraStoragePrice:
+          type: number
+
+    VmSpec:
+      type: object
+      properties:
+        cpu:
+          type: integer
+        memory:
+          type: integer
+        storage:
+          type: integer
+
+    UpsertVMPriceReq:
+      type: object
+      properties:
+        name:
+          type: string
+        specList:
+          type: array
+          items:
+            $ref: '#/components/schemas/VmSpecPrice'
+    BillingReq:
+      type: object
+      properties:
+        startAt:
+          type: string
+        endAt:
+          type: string
+
+    Billing:
+      type: object
+      properties:
+        hostname:
+          type: string
+        uuid:
+          type: string
+        vCPUs:
+          type: integer
+        memory:
+          type: integer
+        osName:
+          type: string
+        location:
+          type: string
+        datacenter:
+          type: string
+        datacenterId:
+          type: string
+        clusterId:
+          type: string
+        storage:
+          type: integer
+        specName:
+          type: string
+        specPrice:
+          type: number
+        baseFeePerHour:
+          type: number
+        status:
+          type: string
+        hours:
+          type: integer
+        extraStorage:
+          type: integer
+        extraStoragePrice:
+          type: number
+        extraFee:
+          type: number
+        totalPrice:
+          type: number
+        period:
+          type: string
+        completedAt:
+          type: string
+          format: date-time
+
+    Whitelist:
+      type: object
+      properties:
+        id:
+          type: string
+        tenantId:
+          type: string
+        msId:
+          type: string
+        projectId:
+          type: string
+        hostName:
+          type: string
+        uuid:
+          type: string
+        cpus:
+          type: integer
+        memory:
+          type: integer
+        storage:
+          type: integer
+        owner:
+          type: string
+        department:
+          type: string
+        type:
+          type: string
+        status:
+          type: boolean
+
+    UpsertWhitelistReq:
+      type: object
+      properties:
+        hostName:
+          type: string
+        uuid:
+          type: string
+        type:
+          type: string
+        status:
+          type: boolean
+        owner:
+          type: string
+        department:
+          type: string
 
     SystemUser:
       type: object
