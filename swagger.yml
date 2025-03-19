@@ -3,13 +3,95 @@ info:
   title: Odin auth Apis
   contact:
     email: dan.chen@boardware.com
-  version: 1.0.9
+  version: 1.0.10
 # servers:
 #   - url: https://petstore3.swagger.io/api/v3
 tags:
   - name: system
   - name: statistics
+  - name: tenant
 paths:
+  /tenants:
+    get:
+      tags:
+        - tenant
+      summary: Get all tenants
+      description: Get all tenants
+      operationId: listTenants
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Tenant'
+    post:
+      tags:
+        - tenant
+      summary: Get all tenants
+      description: Get all tenants
+      operationId: createTenant
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpsertTenantRequest'
+      responses:
+        "201":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tenant'
+  /tenants/{tenantId}:
+    get:
+      tags:
+        - tenant
+      summary: Get tenant by id
+      description: Get tenant by id
+      operationId: getTenantById
+      parameters:
+        - $ref: '#/components/parameters/tenantId'
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tenant'
+    put:
+      tags:
+        - tenant
+      summary: Update tenant
+      description: Update tenant
+      operationId: updateTenant
+      parameters:
+        - $ref: '#/components/parameters/tenantId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpsertTenantRequest'
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tenant'
+    delete:
+      tags:
+        - tenant
+      summary: Delete tenant
+      description: Delete tenant
+      operationId: deleteTenant
+      parameters:
+        - $ref: '#/components/parameters/tenantId'
+      responses:
+        "204":
+          description: successful operation
   /system/login:
     post:
       tags:
@@ -46,7 +128,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserInfo'
+                $ref: '#/components/schemas/SystemUser'
     post:
       tags:
         - system
@@ -240,6 +322,49 @@ paths:
                 $ref: '#/components/schemas/Bills'
 components:
   schemas:
+    Tenant:
+      type: object
+      properties:
+        id:
+          type: string
+        englishName:
+          type: string
+        chineseName:
+          type: string
+        status:
+          type: integer
+          format: int64
+        contact:
+          type: string
+        email:
+          type: string
+      required:
+        - id
+        - englishName
+        - chineseName
+        - status
+        - contact
+        - email
+    UpsertTenantRequest:
+      type: object
+      properties:
+        englishName:
+          type: string
+        chineseName:
+          type: string
+        status:
+          type: integer
+          format: int64
+        contact:
+          type: string
+        email:
+          type: string
+      required:
+        - englishName
+        - chineseName
+        - status
+        - contact
+        - email
     SystemUser:
       type: object
       properties:
