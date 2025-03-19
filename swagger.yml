@@ -520,38 +520,6 @@ components:
       bearerFormat: JWT
       description: 需通过 /login 接口获取有效Token
   schemas:
-    Project:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        code:
-          type: string
-        tenantId:
-          type: string
-        priceTableId:
-          type: string
-        status:
-          type: integer
-          format: int64
-        msId:
-          type: string
-        contractIds:
-          type: string
-        contractNames:
-          type: array
-          items:
-            type: string
-        contract:
-          type: array
-          items:
-            type: string
-        createdAt:
-          type: string
-        updatedAt:
-          type: string
     Tenant:
       type: object
       properties:
@@ -667,7 +635,6 @@ components:
           type: string
       required:
         - newPassword
-
     Project:
       type: object
       properties:
@@ -701,7 +668,6 @@ components:
           type: string
         deletedAt:
           type: string
-
       required:
         - name
         - code
