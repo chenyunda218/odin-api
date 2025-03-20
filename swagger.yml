@@ -3,7 +3,7 @@ info:
   title: Odin auth Apis
   contact:
     email: dan.chen@boardware.com
-  version: 1.0.28
+  version: 1.0.29
 servers:
   - url: https://103.192.46.20:27002/v2
     description: UAT
@@ -879,6 +879,28 @@ paths:
       operationId: getCases
       parameters:
         - $ref: "#/components/parameters/projectId"
+        - name: startAt
+          in: query
+          description: startAt
+          required: false
+          schema:
+            type: integer
+            format: int64
+        - name: endAt
+          in: query
+          description: endAt
+          required: false
+          schema:
+            type: integer
+            format: int64
+        - name: statuses
+          in: query
+          description: statuses
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
       responses:
         "200":
           description: successful operation
@@ -1304,8 +1326,6 @@ components:
           type: string
         updatedAt:
           type: string
-        deletedAt:
-          type: string
       required:
         - name
         - code
@@ -1678,8 +1698,23 @@ components:
           $ref: "#/components/schemas/WebhookNotification"
         email:
           $ref: "#/components/schemas/EmailNotification"
-
     CaseList:
+      type: object
+      properties:
+        total:
+          type: integer
+          format: int64
+        pageSize:
+          type: integer
+          format: int64
+        page:
+          type: integer
+          format: int64
+        cases:
+          type: array
+          items:
+            $ref: "#/components/schemas/Case"
+    Case:
       type: object
       properties:
         id:
