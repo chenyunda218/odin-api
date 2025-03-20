@@ -876,7 +876,7 @@ paths:
       security:
         - BearerAuth: []
       description: Get cases
-      operationId: getCases
+      operationId: listCases
       parameters:
         - $ref: "#/components/parameters/projectId"
         - name: pageSize
