@@ -3,7 +3,7 @@ info:
   title: Odin auth Apis
   contact:
     email: dan.chen@boardware.com
-  version: 1.0.27
+  version: 1.0.28
 servers:
   - url: https://103.192.46.20:27002/v2
     description: UAT
@@ -255,6 +255,8 @@ paths:
       tags:
         - tenant
       summary: Change password
+      security:
+        - BearerAuth: []
       description: Change password
       operationId: changePassword
       parameters:
@@ -273,8 +275,10 @@ paths:
       tags:
         - tenant
       summary: Get projects
+      security:
+        - BearerAuth: []
       description: Get projects
-      operationId: getProjects
+      operationId: listTenantProjects
       parameters:
         - $ref: "#/components/parameters/tenantId"
       responses:
@@ -290,6 +294,8 @@ paths:
       tags:
         - tenant
       summary: Create project
+      security:
+        - BearerAuth: []
       description: Create project
       operationId: createProject
       parameters:
@@ -312,6 +318,8 @@ paths:
       tags:
         - tenant
       summary: Update project
+      security:
+        - BearerAuth: []
       description: Update project
       operationId: updateProject
       parameters:
@@ -332,6 +340,8 @@ paths:
       tags:
         - tenant
       summary: Delete project
+      security:
+        - BearerAuth: []
       description: Delete project
       operationId: deleteProject
       parameters:
@@ -345,6 +355,8 @@ paths:
       tags:
         - tenant
       summary: Get contracts
+      security:
+        - BearerAuth: []
       description: Get contracts
       operationId: getContracts
       parameters:
@@ -362,6 +374,8 @@ paths:
       tags:
         - tenant
       summary: Create contract
+      security:
+        - BearerAuth: []
       description: Create contract
       operationId: createContract
       parameters:
@@ -384,6 +398,8 @@ paths:
       tags:
         - tenant
       summary: Update contract
+      security:
+        - BearerAuth: []
       description: Update contract
       operationId: updateContract
       parameters:
@@ -406,6 +422,8 @@ paths:
         - tenant
       summary: Delete contract
       description: Delete contract
+      security:
+        - BearerAuth: []
       operationId: deleteContract
       parameters:
         - $ref: "#/components/parameters/contractId"
@@ -418,6 +436,8 @@ paths:
       tags:
         - tenant
       summary: Get VM prices
+      security:
+        - BearerAuth: []
       description: Get VM prices
       operationId: getVMPrices
       parameters:
