@@ -9,6 +9,10 @@ servers:
     description: UAT
   - url: http://localhost:8080
     description: 开发环境
+
+security:
+  - BearerAuth: []
+
 tags:
   - name: system
   - name: statistics
@@ -16,31 +20,31 @@ tags:
   - name: project
   - name: account
 paths:
-  # /accounts/login:
-    # post:
-    #   tags:
-    #     - account
-    #   summary: Login
-    #   description: Login
-    #   operationId: login
-    #   requestBody:
-    #     content:
-    #       application/json:
-    #         schema:
-    #           $ref: "#/components/schemas/LoginReq"
-    #   responses:
-    #     "201":
-    #       description: successful operation
-    #       content:
-    #         application/json:
-    #           schema:
-    #             $ref: "#/components/schemas/LoginRes"
-    #     "401":
-    #       description: Invalid username/password supplied
-    #       content:
-    #         application/json:
-    #           schema:
-    #             $ref: "#/components/schemas/ErrorMessage"
+  /accounts/login:
+    post:
+      tags:
+        - account
+      summary: Login
+      description: Login
+      operationId: login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginReq'
+      responses:
+        '201':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginRes'
+        '401':
+          description: Invalid username/password supplied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
   /accounts/me:
     get:
       tags:
@@ -51,12 +55,12 @@ paths:
       security:
         - BearerAuth: []
       responses:
-        "200":
+        '200':
           description: successful operation
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/User"
+                $ref: '#/components/schemas/SystemUser'
   /projects:
     get:
       tags:
@@ -611,11 +615,265 @@ paths:
         "204":
           description: successful operation
 
+  /tenants/projects/{projectId}/entrance:
+    get:
+      tags:
+        - tenant
+      summary: Get entrance
+      description: Get entrance
+      operationId: getEntrance
+      parameters:
+        - $ref: "#/components/parameters/projectId"
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Entrance"
+    post:
+      tags:
+        - tenant
+      summary: Create entrance
+      description: Create entrance
+      operationId: createEntrance
+      parameters:
+        - $ref: "#/components/parameters/projectId"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpsertEntranceReq"
+      responses:
+        "201":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Entrance"
+
+  /tenants/projects/entrance/{entranceId}:
+    put:
+      tags:
+        - tenant
+      summary: Update entrance
+      description: Update entrance
+      operationId: updateEntrance
+      parameters:
+        - $ref: "#/components/parameters/entranceId"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpsertEntranceReq"
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Entrance"
+    delete:
+      tags:
+        - tenant
+      summary: Delete entrance
+      description: Delete entrance
+      operationId: deleteEntrance
+      parameters:
+        - $ref: "#/components/parameters/entranceId"
+      responses:
+        "204":
+          description: successful operation
+
+  /tenants/projects/{projectId}/channel:
+    get:
+      tags:
+        - tenant
+      summary: Get channel
+      description: Get channel
+      operationId: getChannel
+      parameters:
+        - $ref: "#/components/parameters/projectId"
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Channel"
+    post:
+      tags:
+        - tenant
+      summary: Create channel
+      description: Create channel
+      operationId: createChannel
+      parameters:
+        - $ref: "#/components/parameters/projectId"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpsertChannelReq"
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Channel"
+
+  /tenants/projects/channel/{channelId}:
+    put:
+      tags:
+        - tenant
+      summary: Update channel
+      description: Update channel
+      operationId: updateChannel
+      parameters:
+        - $ref: "#/components/parameters/channelId"
+
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpsertChannelReq"
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Channel"
+
+    delete:
+      tags:
+        - tenant
+      summary: Delete channel
+      description: Delete channel
+      operationId: deleteChannel
+      parameters:
+        - $ref: "#/components/parameters/channelId"
+
+      responses:
+        "204":
+          description: successful operation
+
+  /tenants/projects/{projectId}/notification:
+    get:
+      tags:
+        - tenant
+      summary: Get notification
+      description: Get notification
+      operationId: getNotification
+      parameters:
+        - $ref: "#/components/parameters/projectId"
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Notification"
+
+    post:
+      tags:
+        - tenant
+      summary: Create notification
+      description: Create notification
+      operationId: createNotification
+      parameters:
+        - $ref: "#/components/parameters/projectId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpsertNotificationReq"
+      responses:
+        "201":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Notification"
+
+  /tenants/projects/notification/{notificationId}:
+    put:
+      tags:
+        - tenant
+      summary: Update notification
+      description: Update notification
+      operationId: updateNotification
+      parameters:
+        - $ref: "#/components/parameters/notificationId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpsertNotificationReq"
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Notification"
+
+    delete:
+      tags:
+        - tenant
+      summary: Delete notification
+      description: Delete notification
+      operationId: deleteNotification
+      parameters:
+        - $ref: "#/components/parameters/notificationId"
+      responses:
+        "204":
+          description: successful operation
+
+  /tenants/projects/{projectId}/cases:
+    get:
+      tags:
+        - tenant
+      summary: Get cases
+      security:
+        - BearerAuth: []
+      description: Get cases
+      operationId: getCases
+      parameters:
+        - $ref: "#/components/parameters/projectId"
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CaseList"
+
+  /system/logout:
+    post:
+      tags:
+        - system
+      operationId: logout
+      responses:
+        "200":
+          description: successful operation
+
   /system/login:
     post:
       tags:
         - system
       operationId: login
+      security:
+        - none: []
+
       requestBody:
         content:
           application/json:
@@ -772,11 +1030,6 @@ paths:
       operationId: getDeviceStatistics
       parameters:
         - $ref: "#/components/parameters/queryProjectId"
-        - name: status
-          in: query
-          required: false
-          schema:
-            type: string
       responses:
         "200":
           description: successful operation
@@ -1249,22 +1502,243 @@ components:
           type: string
         department:
           type: string
-    User:
+
+    Entrance:
       type: object
       properties:
         id:
           type: string
+        projectId:
+          type: string
+        name:
+          type: string
+        includedTag:
+          type: array
+          items:
+            $ref: "#/components/schemas/TagPair"
+        channelList:
+          type: array
+          items:
+            type: string
+        notificationList:
+          type: array
+          items:
+            type: string
+        status:
+          type: string
+
+    UpsertEntranceReq:
+      type: object
+      properties:
+        name:
+          type: string
+        includedTag:
+          type: array
+          items:
+            $ref: "#/components/schemas/TagPair"
+        channelList:
+          type: array
+          items:
+            type: string
+        notificationList:
+          type: array
+          items:
+            type: string
+        status:
+          type: string
+
+    TagPair:
+      type: object
+      properties:
+        key:
+          type: string
+        value:
+          type: string
+        opt:
+          type: string
+
+    Channel:
+      type: object
+      properties:
+        id:
+          type: string
+        projectId:
+          type: string
+        name:
+          type: string
+        type:
+          type: string
+        channel:
+          $ref: "#/components/schemas/SlackChannel"
+
+    SlackChannel:
+      type: object
+      properties:
+        token:
+          type: string
+        channel:
+          type: string
+        signSecret:
+          type: string
+
+    UpsertChannelReq:
+      type: object
+      properties:
+        name:
+          type: string
+        type:
+          type: string
+        slackChannel:
+          $ref: "#/components/schemas/SlackChannel"
+
+    Notification:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        projectId:
+          type: string
+        notificationer:
+          $ref: "#/components/schemas/EmailNotification"
+
+    EmailNotification:
+      type: object
+      properties:
+        host:
+          type: string
+        port:
+          type: integer
         username:
           type: string
-        email:
+        password:
           type: string
-        userType:
-          $ref: "#/components/schemas/UserType"
-      required:
-        - id
-        - username
-        - email
-        - userType
+        from:
+          type: string
+        to:
+          type: string
+        cc:
+          type: string
+        bcc:
+          type: string
+        subject:
+          type: string
+        body:
+          type: string
+        insecureSkipVerify:
+          type: boolean
+        contentType:
+          type: string
+
+    WebhookNotification:
+      type: object
+      properties:
+        url:
+          type: string
+
+    UpsertNotificationReq:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        type:
+          type: string
+        webhook:
+          $ref: "#/components/schemas/WebhookNotification"
+        email:
+          $ref: "#/components/schemas/EmailNotification"
+
+    CaseList:
+      type: object
+      properties:
+        id:
+          type: string
+        url:
+          type: string
+        caseId:
+          type: string
+        title:
+          type: string
+        project:
+          type: string
+        assignee:
+          type: string
+        reporter:
+          type: string
+        type:
+          type: string
+        key:
+          type: string
+        priority:
+          type: string
+        resolution:
+          type: string
+        created:
+          type: string
+        updated:
+          type: string
+        duedate:
+          type: string
+        company:
+          type: string
+        companySite:
+          type: string
+        sla:
+          type: array
+          items:
+            $ref: "#/components/schemas/SLA"
+        poOrSo:
+          type: string
+        status:
+          type: string
+
+    SLA:
+      type: object
+      properties:
+        indexedState:
+          type: string
+        lastStatusDate:
+          type: string
+        paused:
+          type: boolean
+        endDate:
+          type: string
+        pausedDuration:
+          type: string
+        issueSlaId:
+          type: number
+        slaStatus:
+          type: string
+        remainingDuration:
+          type: string
+        elapsedPercentage:
+          type: string
+        slaValue:
+          type: string
+        issueKey:
+          type: string
+        overdueDuration:
+          type: string
+        slaId:
+          type: number
+        created:
+          type: string
+        targetDate:
+          type: string
+        started:
+          type: boolean
+        finished:
+          type: boolean
+        workingCalendarName:
+          type: string
+        startDate:
+          type: string
+        slaValueAsDurationString:
+          type: string
+
     SystemUser:
       type: object
       properties:
@@ -1350,7 +1824,7 @@ components:
       type: object
       properties:
         type:
-          $ref: "#/components/schemas/UserType"
+          $ref: '#/components/schemas/UserType'
         username:
           type: string
         password:
@@ -1391,9 +1865,6 @@ components:
           items:
             type: number
             format: double
-      required:
-        - topFiveDevices
-        - trend
     AlarmsTrends:
       type: object
       properties:
