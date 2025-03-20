@@ -3,7 +3,7 @@ info:
   title: Odin auth Apis
   contact:
     email: dan.chen@boardware.com
-  version: 1.0.26
+  version: 1.0.27
 servers:
   - url: https://103.192.46.20:27002/v2
     description: UAT
@@ -173,7 +173,9 @@ paths:
         - tenant
       summary: Get accounts
       description: Get accounts
-      operationId: getAccounts
+      security:
+        - BearerAuth: []
+      operationId: listAccounts
       parameters:
         - $ref: "#/components/parameters/tenantId"
       responses:
@@ -191,6 +193,8 @@ paths:
       summary: Create account
       description: Create account
       operationId: createAccount
+      security:
+        - BearerAuth: []
       parameters:
         - $ref: "#/components/parameters/tenantId"
       requestBody:
@@ -213,6 +217,8 @@ paths:
       summary: Update account
       description: Update account
       operationId: updateAccount
+      security:
+        - BearerAuth: []
       parameters:
         - $ref: "#/components/parameters/accountId"
       requestBody:
@@ -235,6 +241,8 @@ paths:
       summary: Delete account
       description: Delete account
       operationId: deleteAccount
+      security:
+        - BearerAuth: []
       parameters:
         - $ref: "#/components/parameters/accountId"
 
@@ -1202,8 +1210,6 @@ components:
         createdAt:
           type: string
         updatedAt:
-          type: string
-        deletedAt:
           type: string
 
       required:
