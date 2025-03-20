@@ -3,7 +3,7 @@ info:
   title: Odin auth Apis
   contact:
     email: dan.chen@boardware.com
-  version: 1.0.22
+  version: 1.0.23
 servers:
   - url: https://103.192.46.20:27002/v2
     description: UAT
@@ -16,6 +16,47 @@ tags:
   - name: project
   - name: account
 paths:
+  /accounts/login:
+    post:
+      tags:
+        - account
+      summary: Login
+      description: Login
+      operationId: login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginReq"
+      responses:
+        "201":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LoginRes"
+        "401":
+          description: Invalid username/password supplied
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+  /accounts/me:
+    get:
+      tags:
+        - account
+      summary: Get account info
+      description: Get account info
+      operationId: getMe
+      security:
+        - BearerAuth: []
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
   /projects:
     get:
       tags:
@@ -26,14 +67,14 @@ paths:
       security:
         - BearerAuth: []
       responses:
-        '200':
+        "200":
           description: successful operation
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Project'
+                  $ref: "#/components/schemas/Project"
   /tenants:
     get:
       tags:
@@ -44,14 +85,14 @@ paths:
       description: Get all tenants
       operationId: listTenants
       responses:
-        '200':
+        "200":
           description: successful operation
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Tenant'
+                  $ref: "#/components/schemas/Tenant"
     post:
       tags:
         - tenant
@@ -64,14 +105,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UpsertTenantRequest'
+              $ref: "#/components/schemas/UpsertTenantRequest"
       responses:
-        '201':
+        "201":
           description: successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Tenant'
+                $ref: "#/components/schemas/Tenant"
   /tenants/{tenantId}:
     get:
       tags:
@@ -82,14 +123,14 @@ paths:
       security:
         - BearerAuth: []
       parameters:
-        - $ref: '#/components/parameters/tenantId'
+        - $ref: "#/components/parameters/tenantId"
       responses:
-        '200':
+        "200":
           description: successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Tenant'
+                $ref: "#/components/schemas/Tenant"
     put:
       tags:
         - tenant
@@ -97,19 +138,19 @@ paths:
       description: Update tenant
       operationId: updateTenant
       parameters:
-        - $ref: '#/components/parameters/tenantId'
+        - $ref: "#/components/parameters/tenantId"
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UpsertTenantRequest'
+              $ref: "#/components/schemas/UpsertTenantRequest"
       responses:
-        '200':
+        "200":
           description: successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Tenant'
+                $ref: "#/components/schemas/Tenant"
     delete:
       tags:
         - tenant
@@ -117,9 +158,9 @@ paths:
       description: Delete tenant
       operationId: deleteTenant
       parameters:
-        - $ref: '#/components/parameters/tenantId'
+        - $ref: "#/components/parameters/tenantId"
       responses:
-        '204':
+        "204":
           description: successful operation
 
   /tenants/{tenantId}/accounts:
@@ -130,14 +171,14 @@ paths:
       description: Get accounts
       operationId: getAccounts
       parameters:
-        - $ref: '#/components/parameters/tenantId'
+        - $ref: "#/components/parameters/tenantId"
       responses:
-        '200':
+        "200":
           description: successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Account'
+                $ref: "#/components/schemas/Account"
     post:
       tags:
         - tenant
@@ -145,19 +186,19 @@ paths:
       description: Create account
       operationId: createAccount
       parameters:
-        - $ref: '#/components/parameters/tenantId'
+        - $ref: "#/components/parameters/tenantId"
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/AccountRequest'
+              $ref: "#/components/schemas/AccountRequest"
       responses:
-        '201':
+        "201":
           description: successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Account'
+                $ref: "#/components/schemas/Account"
 
   /tenants/account/{accountId}:
     put:
@@ -167,20 +208,20 @@ paths:
       description: Update account
       operationId: updateAccount
       parameters:
-        - $ref: '#/components/parameters/accountId'
+        - $ref: "#/components/parameters/accountId"
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Account'
+              $ref: "#/components/schemas/Account"
       responses:
-        '200':
+        "200":
           description: successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Account'
+                $ref: "#/components/schemas/Account"
 
     delete:
       tags:
@@ -189,10 +230,10 @@ paths:
       description: Delete account
       operationId: deleteAccount
       parameters:
-        - $ref: '#/components/parameters/accountId'
+        - $ref: "#/components/parameters/accountId"
 
       responses:
-        '204':
+        "204":
           description: successful operation
 
   /tenants/account/{accountId}/change-password:
@@ -203,14 +244,14 @@ paths:
       description: Change password
       operationId: changePassword
       parameters:
-        - $ref: '#/components/parameters/accountId'
+        - $ref: "#/components/parameters/accountId"
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ChangePasswordReq'
+              $ref: "#/components/schemas/ChangePasswordReq"
       responses:
-        '204':
+        "204":
           description: successful operation
 
   /tenants/{tenantId}/projects:
@@ -221,16 +262,16 @@ paths:
       description: Get projects
       operationId: getProjects
       parameters:
-        - $ref: '#/components/parameters/tenantId'
+        - $ref: "#/components/parameters/tenantId"
       responses:
-        '200':
+        "200":
           description: successful operation
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Project'
+                  $ref: "#/components/schemas/Project"
     post:
       tags:
         - tenant
@@ -238,19 +279,19 @@ paths:
       description: Create project
       operationId: createProject
       parameters:
-        - $ref: '#/components/parameters/tenantId'
+        - $ref: "#/components/parameters/tenantId"
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UpsertProjectReq'
+              $ref: "#/components/schemas/UpsertProjectReq"
       responses:
-        '201': # created
+        "201": # created
           description: successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Project'
+                $ref: "#/components/schemas/Project"
 
   /tenants/projects/{projectId}:
     put:
@@ -260,19 +301,19 @@ paths:
       description: Update project
       operationId: updateProject
       parameters:
-        - $ref: '#/components/parameters/projectId'
+        - $ref: "#/components/parameters/projectId"
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UpsertProjectReq'
+              $ref: "#/components/schemas/UpsertProjectReq"
       responses:
-        '200':
+        "200":
           description: successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Project'
+                $ref: "#/components/schemas/Project"
     delete:
       tags:
         - tenant
@@ -280,9 +321,9 @@ paths:
       description: Delete project
       operationId: deleteProject
       parameters:
-        - $ref: '#/components/parameters/projectId'
+        - $ref: "#/components/parameters/projectId"
       responses:
-        '204': # deleted
+        "204": # deleted
           description: successful operation
 
   /tenants/projects/{projectId}/contracts:
@@ -293,16 +334,16 @@ paths:
       description: Get contracts
       operationId: getContracts
       parameters:
-        - $ref: '#/components/parameters/projectId'
+        - $ref: "#/components/parameters/projectId"
       responses:
-        '200':
+        "200":
           description: successful operation
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Contract'
+                  $ref: "#/components/schemas/Contract"
     post:
       tags:
         - tenant
@@ -310,19 +351,19 @@ paths:
       description: Create contract
       operationId: createContract
       parameters:
-        - $ref: '#/components/parameters/projectId'
+        - $ref: "#/components/parameters/projectId"
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UpsertContractReq'
+              $ref: "#/components/schemas/UpsertContractReq"
       responses:
-        '201':
+        "201":
           description: successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Contract'
+                $ref: "#/components/schemas/Contract"
 
   /tenants/projects/contracts/{contractId}:
     put:
@@ -332,19 +373,19 @@ paths:
       description: Update contract
       operationId: updateContract
       parameters:
-        - $ref: '#/components/parameters/contractId'
+        - $ref: "#/components/parameters/contractId"
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UpsertContractReq'
+              $ref: "#/components/schemas/UpsertContractReq"
       responses:
-        '200':
+        "200":
           description: successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Contract'
+                $ref: "#/components/schemas/Contract"
 
     delete:
       tags:
@@ -353,9 +394,9 @@ paths:
       description: Delete contract
       operationId: deleteContract
       parameters:
-        - $ref: '#/components/parameters/contractId'
+        - $ref: "#/components/parameters/contractId"
       responses:
-        '204':
+        "204":
           description: successful operation
 
   /tenants/projects/{projectId}/vm-prices:
@@ -366,16 +407,16 @@ paths:
       description: Get VM prices
       operationId: getVMPrices
       parameters:
-        - $ref: '#/components/parameters/projectId'
+        - $ref: "#/components/parameters/projectId"
       responses:
-        '200':
+        "200":
           description: successful operation
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/VMPrice'
+                  $ref: "#/components/schemas/VMPrice"
 
     post:
       tags:
@@ -384,19 +425,19 @@ paths:
       description: Create VM price
       operationId: createVMPrice
       parameters:
-        - $ref: '#/components/parameters/projectId'
+        - $ref: "#/components/parameters/projectId"
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UpsertVMPriceReq'
+              $ref: "#/components/schemas/UpsertVMPriceReq"
       responses:
-        '201':
+        "201":
           description: successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/VMPrice'
+                $ref: "#/components/schemas/VMPrice"
 
   /tenants/projects/vm-prices/{vmPriceTableId}:
     put:
@@ -406,20 +447,20 @@ paths:
       description: Update VM price
       operationId: updateVMPrice
       parameters:
-        - $ref: '#/components/parameters/vmPriceTableId'
+        - $ref: "#/components/parameters/vmPriceTableId"
 
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UpsertVMPriceReq'
+              $ref: "#/components/schemas/UpsertVMPriceReq"
       responses:
-        '200':
+        "200":
           description: successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/VMPrice'
+                $ref: "#/components/schemas/VMPrice"
     delete:
       tags:
         - tenant
@@ -427,10 +468,10 @@ paths:
       description: Delete VM price
       operationId: deleteVMPrice
       parameters:
-        - $ref: '#/components/parameters/vmPriceTableId'
+        - $ref: "#/components/parameters/vmPriceTableId"
 
       responses:
-        '204':
+        "204":
           description: successful operation
 
   /tenants/projects/vm-prices/{vmPriceTableId}/record:
@@ -441,15 +482,15 @@ paths:
       description: Update VM price record
       operationId: updateVMPriceRecord
       parameters:
-        - $ref: '#/components/parameters/vmPriceTableId'
+        - $ref: "#/components/parameters/vmPriceTableId"
 
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/VMPrice'
+              $ref: "#/components/schemas/VMPrice"
       responses:
-        '200':
+        "200":
           description: successful operation
 
   /tenants/projects/{projectId}/billing:
@@ -460,19 +501,19 @@ paths:
       description: Create billing
       operationId: createBilling
       parameters:
-        - $ref: '#/components/parameters/projectId'
+        - $ref: "#/components/parameters/projectId"
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/BillingReq'
+              $ref: "#/components/schemas/BillingReq"
       responses:
-        '200':
+        "200":
           description: successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Billing'
+                $ref: "#/components/schemas/Billing"
 
   /tenants/projects/{projectId}/billing/download:
     post:
@@ -482,14 +523,14 @@ paths:
       description: Download billing
       operationId: downloadBilling
       parameters:
-        - $ref: '#/components/parameters/projectId'
+        - $ref: "#/components/parameters/projectId"
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/BillingReq'
+              $ref: "#/components/schemas/BillingReq"
       responses:
-        '200':
+        "200":
           description: successful operation
           content:
             application/octet-stream:
@@ -504,16 +545,16 @@ paths:
       description: Get whitelist
       operationId: getWhitelist
       parameters:
-        - $ref: '#/components/parameters/projectId'
+        - $ref: "#/components/parameters/projectId"
       responses:
-        '200':
+        "200":
           description: successful operation
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Whitelist'
+                  $ref: "#/components/schemas/Whitelist"
     post:
       tags:
         - tenant
@@ -521,21 +562,21 @@ paths:
       description: Add whitelist
       operationId: addWhitelist
       parameters:
-        - $ref: '#/components/parameters/projectId'
+        - $ref: "#/components/parameters/projectId"
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UpsertWhitelistReq'
+              $ref: "#/components/schemas/UpsertWhitelistReq"
       responses:
-        '201':
+        "201":
           description: successful operation
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Whitelist'
+                  $ref: "#/components/schemas/Whitelist"
 
   /tenants/projects/whitelist/{whitelistId}:
     put:
@@ -545,19 +586,19 @@ paths:
       description: Update whitelist
       operationId: updateWhitelist
       parameters:
-        - $ref: '#/components/parameters/whitelistId'
+        - $ref: "#/components/parameters/whitelistId"
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UpsertWhitelistReq'
+              $ref: "#/components/schemas/UpsertWhitelistReq"
       responses:
-        '200':
+        "200":
           description: successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Whitelist'
+                $ref: "#/components/schemas/Whitelist"
     delete:
       tags:
         - tenant
@@ -565,9 +606,9 @@ paths:
       description: Delete whitelist
       operationId: deleteWhitelist
       parameters:
-        - $ref: '#/components/parameters/whitelistId'
+        - $ref: "#/components/parameters/whitelistId"
       responses:
-        '204':
+        "204":
           description: successful operation
 
   /system/login:
@@ -579,20 +620,20 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/LoginReq'
+              $ref: "#/components/schemas/LoginReq"
       responses:
-        '200':
+        "200":
           description: successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/LoginRes'
-        '401':
+                $ref: "#/components/schemas/LoginRes"
+        "401":
           description: Invalid username/password supplied
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessage'
+                $ref: "#/components/schemas/ErrorMessage"
   /system/user:
     get:
       tags:
@@ -601,16 +642,16 @@ paths:
       security:
         - BearerAuth: []
       description: Get user info
-      operationId: listSystemUsers
+      operationId: getUser
       responses:
-        '200':
+        "200":
           description: successful operation
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/SystemUser'
+                  $ref: "#/components/schemas/SystemUser"
     post:
       tags:
         - system
@@ -618,19 +659,19 @@ paths:
       security:
         - BearerAuth: []
       description: Create user
-      operationId: createSystemUser
+      operationId: listSystemUsers
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/SystemUser'
+              $ref: "#/components/schemas/SystemUser"
       responses:
-        '201':
+        "201":
           description: successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SystemUser'
+                $ref: "#/components/schemas/SystemUser"
   /system/user/{userId}:
     get:
       tags:
@@ -641,14 +682,14 @@ paths:
       description: Get user by id
       operationId: getUserById
       parameters:
-        - $ref: '#/components/parameters/userId'
+        - $ref: "#/components/parameters/userId"
       responses:
-        '200':
+        "200":
           description: successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SystemUser'
+                $ref: "#/components/schemas/SystemUser"
     put:
       tags:
         - system
@@ -658,19 +699,19 @@ paths:
       description: Update user
       operationId: updateUser
       parameters:
-        - $ref: '#/components/parameters/userId'
+        - $ref: "#/components/parameters/userId"
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/SystemUser'
+              $ref: "#/components/schemas/SystemUser"
       responses:
-        '200':
+        "200":
           description: successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SystemUser'
+                $ref: "#/components/schemas/SystemUser"
     delete:
       tags:
         - system
@@ -680,9 +721,9 @@ paths:
       description: Delete user
       operationId: deleteUser
       parameters:
-        - $ref: '#/components/parameters/userId'
+        - $ref: "#/components/parameters/userId"
       responses:
-        '204':
+        "204":
           description: successful operation
   /system/user/{userId}/info:
     get:
@@ -692,14 +733,14 @@ paths:
       description: Get user info by id
       operationId: getUserInfoById
       parameters:
-        - $ref: '#/components/parameters/userId'
+        - $ref: "#/components/parameters/userId"
       responses:
-        '200':
+        "200":
           description: successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SystemUserInfo'
+                $ref: "#/components/schemas/SystemUserInfo"
     put:
       tags:
         - system
@@ -707,19 +748,19 @@ paths:
       description: Update user info
       operationId: updateUserInfo
       parameters:
-        - $ref: '#/components/parameters/userId'
+        - $ref: "#/components/parameters/userId"
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/SystemUserInfo'
+              $ref: "#/components/schemas/SystemUserInfo"
       responses:
-        '200':
+        "200":
           description: successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SystemUserInfo'
+                $ref: "#/components/schemas/SystemUserInfo"
   /statistics/device:
     get:
       tags:
@@ -730,14 +771,14 @@ paths:
       description: Get device statistics
       operationId: getDeviceStatistics
       parameters:
-        - $ref: '#/components/parameters/queryProjectId'
+        - $ref: "#/components/parameters/queryProjectId"
       responses:
-        '200':
+        "200":
           description: successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DeviceInfoList'
+                $ref: "#/components/schemas/DeviceInfoList"
   /statistics/device/availability:
     get:
       tags:
@@ -748,14 +789,14 @@ paths:
       description: Get device availability
       operationId: getDeviceAvailability
       parameters:
-        - $ref: '#/components/parameters/queryProjectId'
+        - $ref: "#/components/parameters/queryProjectId"
       responses:
-        '200':
+        "200":
           description: successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DeviceAvailability'
+                $ref: "#/components/schemas/DeviceAvailability"
   /statistics/device/inventories:
     get:
       tags:
@@ -766,14 +807,14 @@ paths:
       description: Get inventory statistics
       operationId: getInventoryStatistics
       parameters:
-        - $ref: '#/components/parameters/queryProjectId'
+        - $ref: "#/components/parameters/queryProjectId"
       responses:
-        '200':
+        "200":
           description: successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/InventoryItemList'
+                $ref: "#/components/schemas/InventoryItemList"
   /statistics/alarms:
     get:
       tags:
@@ -782,14 +823,14 @@ paths:
       security:
         - BearerAuth: []
       parameters:
-        - $ref: '#/components/parameters/queryProjectId'
+        - $ref: "#/components/parameters/queryProjectId"
       responses:
-        '200':
+        "200":
           description: successful
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AlarmInfoList'
+                $ref: "#/components/schemas/AlarmInfoList"
   /statistics/alarms/trends:
     get:
       tags:
@@ -798,14 +839,14 @@ paths:
       security:
         - BearerAuth: []
       parameters:
-        - $ref: '#/components/parameters/queryProjectId'
+        - $ref: "#/components/parameters/queryProjectId"
       responses:
-        '200':
+        "200":
           description: successful
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AlarmsTrends'
+                $ref: "#/components/schemas/AlarmsTrends"
   /statistics/billing:
     get:
       tags:
@@ -814,14 +855,14 @@ paths:
       security:
         - BearerAuth: []
       parameters:
-        - $ref: '#/components/parameters/queryProjectId'
+        - $ref: "#/components/parameters/queryProjectId"
       responses:
-        '200':
+        "200":
           description: successful
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Bills'
+                $ref: "#/components/schemas/Bills"
 components:
   securitySchemes:
     # JWT Bearer 认证
@@ -1061,7 +1102,7 @@ components:
         specList:
           type: array
           items:
-            $ref: '#/components/schemas/VmSpecPrice'
+            $ref: "#/components/schemas/VmSpecPrice"
         createdAt:
           type: string
           format: date-time
@@ -1079,7 +1120,7 @@ components:
         spec:
           type: array
           items:
-            $ref: '#/components/schemas/VmSpec'
+            $ref: "#/components/schemas/VmSpec"
         price:
           type: number
         extraStoragePrice:
@@ -1103,7 +1144,7 @@ components:
         specList:
           type: array
           items:
-            $ref: '#/components/schemas/VmSpecPrice'
+            $ref: "#/components/schemas/VmSpecPrice"
     BillingReq:
       type: object
       properties:
@@ -1188,7 +1229,6 @@ components:
           type: string
         status:
           type: boolean
-
     UpsertWhitelistReq:
       type: object
       properties:
@@ -1204,7 +1244,22 @@ components:
           type: string
         department:
           type: string
-
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+        username:
+          type: string
+        email:
+          type: string
+        userType:
+          $ref: "#/components/schemas/UserType"
+      required:
+        - id
+        - username
+        - email
+        - userType
     SystemUser:
       type: object
       properties:
@@ -1275,14 +1330,22 @@ components:
         token:
           type: string
         user:
-          $ref: '#/components/schemas/SystemUser'
+          $ref: "#/components/schemas/SystemUser"
         userInfo:
-          $ref: '#/components/schemas/UserInfo'
+          $ref: "#/components/schemas/UserInfo"
       required:
         - token
+    UserType:
+      type: string
+      enum:
+        - ADMIN
+        - USER
+      default: ADMIN
     LoginReq:
       type: object
       properties:
+        type:
+          $ref: "#/components/schemas/UserType"
         username:
           type: string
         password:
@@ -1317,7 +1380,7 @@ components:
         topFiveDevices:
           type: array
           items:
-            $ref: '#/components/schemas/DeviceCosts'
+            $ref: "#/components/schemas/DeviceCosts"
         trend:
           type: array
           items:
@@ -1368,7 +1431,7 @@ components:
     AlarmInfoList:
       type: array
       items:
-        $ref: '#/components/schemas/AlarmInfo'
+        $ref: "#/components/schemas/AlarmInfo"
     InventoryItem:
       type: object
       properties:
@@ -1382,11 +1445,11 @@ components:
     InventoryItemList:
       type: array
       items:
-        $ref: '#/components/schemas/InventoryItem'
+        $ref: "#/components/schemas/InventoryItem"
     DeviceInfoList:
       type: array
       items:
-        $ref: '#/components/schemas/DeviceInfo'
+        $ref: "#/components/schemas/DeviceInfo"
     DeviceInfo:
       type: object
       properties:
@@ -1400,8 +1463,7 @@ components:
           type: integer
           format: int64
         location:
-          type: integer
-          format: int64
+          type: string
         brand:
           type: string
         projectName:
