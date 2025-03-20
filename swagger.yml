@@ -26,7 +26,7 @@ paths:
         - account
       summary: Login
       description: Login
-      operationId: login
+      operationId: accountlogin
       requestBody:
         content:
           application/json:
