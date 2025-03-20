@@ -879,6 +879,22 @@ paths:
       operationId: getCases
       parameters:
         - $ref: "#/components/parameters/projectId"
+        - name: pageSize
+          in: query
+          description: pageSize
+          required: false
+          schema:
+            type: integer
+            format: int64
+            default: 10
+        - name: page
+          in: query
+          description: page
+          required: false
+          schema:
+            type: integer
+            format: int64
+            default: 0
         - name: startAt
           in: query
           description: startAt
