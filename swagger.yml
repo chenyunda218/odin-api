@@ -16,31 +16,31 @@ tags:
   - name: project
   - name: account
 paths:
-  /accounts/login:
-    post:
-      tags:
-        - account
-      summary: Login
-      description: Login
-      operationId: login
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/LoginReq"
-      responses:
-        "201":
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/LoginRes"
-        "401":
-          description: Invalid username/password supplied
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorMessage"
+  # /accounts/login:
+    # post:
+    #   tags:
+    #     - account
+    #   summary: Login
+    #   description: Login
+    #   operationId: login
+    #   requestBody:
+    #     content:
+    #       application/json:
+    #         schema:
+    #           $ref: "#/components/schemas/LoginReq"
+    #   responses:
+    #     "201":
+    #       description: successful operation
+    #       content:
+    #         application/json:
+    #           schema:
+    #             $ref: "#/components/schemas/LoginRes"
+    #     "401":
+    #       description: Invalid username/password supplied
+    #       content:
+    #         application/json:
+    #           schema:
+    #             $ref: "#/components/schemas/ErrorMessage"
   /accounts/me:
     get:
       tags:
@@ -772,6 +772,11 @@ paths:
       operationId: getDeviceStatistics
       parameters:
         - $ref: "#/components/parameters/queryProjectId"
+        - name: status
+          in: query
+          required: false
+          schema:
+            type: string
       responses:
         "200":
           description: successful operation
